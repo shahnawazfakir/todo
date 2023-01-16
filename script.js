@@ -112,3 +112,16 @@ clearAllTasks.onclick = () => {
     localStorage.setItem("New Todo", JSON.stringify(arrayList)); // set the item in local storage
     showTasks(); // call the showTasks function
 }
+
+// display date and time function
+function displayDateTime() {
+    var currentDateTime = new Date();
+    var options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+    var dateTimeString = currentDateTime.toLocaleString('en-US', options);
+    dateTimeString = dateTimeString.replace(/,/g, "");
+    document.getElementById("currentDateTime").innerHTML = dateTimeString;
+}
+
+// call the displayDateTime function every 1000 milliseconds (1 second)
+setInterval(displayDateTime, 1000);
+

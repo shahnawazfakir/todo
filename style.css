@@ -185,6 +185,16 @@ body {
     pointer-events: auto;
 }
 
+/* empty line */
+.line {
+    line-height: 3;
+}
+
+/* empty line */
+.line2 {
+    line-height: 0.5;
+}
+
 /* signature animation */
 .hover-underline-animation {
     display: inline-block;
