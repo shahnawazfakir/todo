@@ -188,14 +188,8 @@ body {
 /* signature animation */
 .hover-underline-animation {
     display: inline-block;
-    position: absolute;
+    position: relative;
     color: #FFFFFF;
-    font-size: 23px;
-    font-weight: 400;
-    bottom: 0;
-    left: 0;
-    margin-left: 10px;
-    margin-bottom: 3px;
 }
 
 /* hover animation */
@@ -216,4 +210,14 @@ body {
 .hover-underline-animation:hover::after {
     transform: scaleX(1);
     transform-origin: bottom left;
+}
+
+#lower-left {
+    color: #FFF;
+    margin-left: 10px;
+    font-size: 23px;
+    font-weight: 400;
+    position: fixed;
+    left: 0;
+    bottom: 0;
 }
