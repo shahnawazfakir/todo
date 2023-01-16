@@ -15,6 +15,8 @@ userInput.onkeyup = () => {
 }
 
 showTasks(); // call the showTask function
+let editing = false; // set editing index to false
+let editingIndex; // declare editingIndex variable
 
 // when user clicks on pen icon button
 addTask.onclick = () => {
@@ -27,11 +29,14 @@ addTask.onclick = () => {
     }
     if (arrayList.includes(userTask)) { // check for duplicate tasks
         alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
+    } else if (editing) {
+        arrayList[editingIndex] = userTask; // update the task at the editing index in the array
+        editing = false; // set editing to false
     } else {
-        arrayList.push(userTask);  // push or add a new value in array
-        localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
-        showTasks(); // call showTask function
+        arrayList.push(userTask); // push or add a new value in array
     }
+    localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
+    showTasks(); // call showTask function
     addTask.classList.remove("active"); // deactivate the add button once the task is added
 }
 
@@ -41,20 +46,22 @@ userInput.addEventListener("keyup", (event) => {
         // detect if user presses enter key to add a todo
         alert("You need to write a todo")
     } else if (event.key === "Enter" && userInput.value.length >= 1 && userTask.trim() != 0) {
-        let userTask = userInput.value; // get user input
         let localStorageData = localStorage.getItem("New Todo"); // getting local storage of browser
         if (localStorageData == null) { // if local storage has no data
             arrayList = []; // create a blank array
         } else {
-            arrayList = JSON.parse(localStorageData);  // transform json string into a js object
+            arrayList = JSON.parse(localStorageData); // transform json string into a js object
         }
         if (arrayList.includes(userTask)) { // check for duplicate tasks
             alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
+        } else if (editing) {
+            arrayList[editingIndex] = userTask; // update the task at the editing index in the array
+            editing = false;
         } else {
-            arrayList.push(userTask);  // push or add a new value in array
-            localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
-            showTasks(); // call showTask function
+            arrayList.push(userTask); // push or add a new value in array
         }
+        localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
+        showTasks(); // call showTask function
         addTask.classList.remove("active"); // deactivate the add button once the task is added
     }
 });
@@ -93,18 +100,10 @@ function deleteTask(index) {
 
 // edit task function
 function editTask(index) {
-    let localStorageData = localStorage.getItem("New Todo"); // get local storage of browser
-    if (localStorageData == null) { // if local storage has no data
-        arrayList = []; // create a blank array
-    } else {
-        arrayList = JSON.parse(localStorageData); // transform json string into a js object
-    }
-    let task = arrayList[index];
-    userInput.value = task; // modify the current task
-    arrayList.splice(index, 1); // delete or remove the li
-    localStorage.setItem("New Todo", JSON.stringify(arrayList));
-    const currentTask = document.getElementById(`task-${index}`); // update the current task
-    currentTask.innerHTML = userInput.value;
+    editing = true; // set editing to true
+    editingIndex = index; // set the index of the task that is being edited
+    let task = arrayList[index]; // get the task from the array
+    userInput.value = task; // set the task in the input field
 }
 
 // deletes all tasks function
