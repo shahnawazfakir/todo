@@ -215,9 +215,10 @@ body {
 #lower-left {
     color: #FFF;
     margin-left: 10px;
+    margin-bottom: 3px;
     font-size: 23px;
     font-weight: 400;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
 }
