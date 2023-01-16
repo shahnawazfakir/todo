@@ -190,11 +190,12 @@ body {
     display: inline-block;
     position: absolute;
     color: #FFFFFF;
-    font-size: 25px;
+    font-size: 23px;
     font-weight: 400;
     bottom: 0;
     left: 0;
-    margin: 1rem;
+    margin-left: 10px;
+    margin-bottom: 3px;
 }
 
 /* hover animation */
