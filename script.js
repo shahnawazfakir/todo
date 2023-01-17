@@ -124,4 +124,3 @@ function displayDateTime() {
 
 // call the displayDateTime function every 1000 milliseconds (1 second)
 setInterval(displayDateTime, 1000);
-
