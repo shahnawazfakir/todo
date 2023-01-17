@@ -27,7 +27,7 @@ addTask.onclick = () => {
     } else {
         arrayList = JSON.parse(localStorageData); // transform json string into a js object
     }
-    if (arrayList.includes(userTask)) { // check for duplicate tasks
+    if (arrayList.includes(userTask) || arrayList.includes(userTask.trim())) { // check for duplicate tasks
         alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
     } else if (editing) {
         arrayList[editingIndex] = userTask; // update the task at the editing index in the array
@@ -52,7 +52,7 @@ userInput.addEventListener("keyup", (event) => {
         } else {
             arrayList = JSON.parse(localStorageData); // transform json string into a js object
         }
-        if (arrayList.includes(userTask)) { // check for duplicate tasks
+        if (arrayList.includes(userTask) || arrayList.includes(userTask.trim())) { // check for duplicate tasks
             alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
         } else if (editing) {
             arrayList[editingIndex] = userTask; // update the task at the editing index in the array
