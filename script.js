@@ -3,6 +3,7 @@ const userInput = document.querySelector(".inputBox input");
 const addTask = document.querySelector(".inputBox button");
 const taskList = document.querySelector(".taskList");
 const clearAllTasks = document.querySelector(".footer button");
+let isPageRefreshed;
 
 // onkeyup event
 userInput.onkeyup = () => {
@@ -30,7 +31,7 @@ addTask.onclick = () => {
     // check for duplicate tasks
     if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
         // alert the user to add different task
-        alert(`"${userTask}" already exists. Please add a different task.`); 
+        alert(`"${userTask.trim()}" already exists. Please add a different task.`);
     } else if (editing) {
         arrayList[editingIndex] = userTask; // update the task at the editing index in the array
         editing = false; // set editing to false
@@ -57,7 +58,7 @@ userInput.addEventListener("keyup", (event) => {
         // check for duplicate tasks
         if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
             // alert the user to add different task
-            alert(`"${userTask}" already exists. Please add a different task.`); 
+            alert(`"${userTask.trim()}" already exists. Please add a different task.`);
         } else if (editing) {
             arrayList[editingIndex] = userTask; // update the task at the editing index in the array
             editing = false;
@@ -69,6 +70,11 @@ userInput.addEventListener("keyup", (event) => {
         addTask.classList.remove("active"); // deactivate the add button once the task is added
     }
 });
+
+window.onload = function () {
+    isPageRefreshed = sessionStorage.getItem('refreshed') === 'true';
+    sessionStorage.setItem('refreshed', true);
+}
 
 function showTasks() {
     let localStorageData = localStorage.getItem("New Todo"); // get local storage of browser
@@ -88,9 +94,28 @@ function showTasks() {
     arrayList.forEach((element, index) => {
         newLiTag += `<li>${element}<span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
     });
+
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
-    taskList.scrollTop = taskList.scrollHeight; // scroll to the bottom of the list as new tasks are added
+
+    if (isPageRefreshed) {
+        taskList.scrollTop = taskList.scrollHeight;
+    } else {
+        scrollToTop();
+    }
+}
+
+// function to scroll up page is refreshed
+function scrollToTop() {
+    currentScroll = taskList.scrollHeight;
+    scrollInterval = setInterval(() => {
+        if (currentScroll <= 0) {
+            clearInterval(scrollInterval);
+        } else {
+            currentScroll -= 2;
+            taskList.scrollTop = currentScroll;
+        }
+    }, 15);
 }
 
 // delete task function

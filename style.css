@@ -37,6 +37,13 @@ body {
     font-weight: 600;
 }
 
+/* title icon color */
+.iconcolor {
+    color: #0CAFFF;
+    font-size: 40px;
+    margin-left: 3px;
+}
+
 /* input box title */
 .boxSpace .inputBox {
     margin: 20px 0;
@@ -220,10 +227,4 @@ body {
 .hover-underline-animation:hover::after {
     transform: scaleX(1);
     transform-origin: bottom left;
-}
-
-.iconcolor {
-    color: #0CAFFF;
-    font-size: 40px;
-    margin-left: 3px;
 }
