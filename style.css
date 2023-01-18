@@ -221,3 +221,9 @@ body {
     transform: scaleX(1);
     transform-origin: bottom left;
 }
+
+.iconcolor {
+    color: #0CAFFF;
+    font-size: 40px;
+    margin-left: 3px;
+}

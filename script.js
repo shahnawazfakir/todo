@@ -27,8 +27,10 @@ addTask.onclick = () => {
     } else {
         arrayList = JSON.parse(localStorageData); // transform json string into a js object
     }
-    if (arrayList.includes(userTask) || arrayList.includes(userTask.trim())) { // check for duplicate tasks
-        alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
+    // check for duplicate tasks
+    if (arrayList.includes(userTask.toLowerCase()) || arrayList.includes(userTask.trim().toLowerCase())) {
+        // alert the user to add different task
+        alert(`"${userTask}" already exists. Please add a different task.`); 
     } else if (editing) {
         arrayList[editingIndex] = userTask; // update the task at the editing index in the array
         editing = false; // set editing to false
@@ -52,8 +54,10 @@ userInput.addEventListener("keyup", (event) => {
         } else {
             arrayList = JSON.parse(localStorageData); // transform json string into a js object
         }
-        if (arrayList.includes(userTask) || arrayList.includes(userTask.trim())) { // check for duplicate tasks
-            alert(`"${userTask}" already exists. Please add a different task.`); // alert the user to add different task
+        // check for duplicate tasks
+        if (arrayList.includes(userTask.toLowerCase()) || arrayList.includes(userTask.trim().toLowerCase())) { 
+            // alert the user to add different task
+            alert(`"${userTask}" already exists. Please add a different task.`); 
         } else if (editing) {
             arrayList[editingIndex] = userTask; // update the task at the editing index in the array
             editing = false;
@@ -121,6 +125,3 @@ function displayDateTime() {
     dateTimeString = dateTimeString.replace(/,/g, "");
     document.getElementById("currentDateTime").innerHTML = dateTimeString;
 }
-
-// call the displayDateTime function every 1000 milliseconds (1 second)
-setInterval(displayDateTime, 1000);
