@@ -6,9 +6,20 @@ const clearAllTasks = document.querySelector(".footer button");
 let isPageRefreshed;
 let currentScrollPos;
 
-// save current scroll position before adding task
-addTask.onclick = () => {
-    currentScrollPos = taskList.scrollTop;
+// on load function
+window.onload = function () {
+    isPageRefreshed = sessionStorage.getItem('refreshed') === 'true';
+    sessionStorage.setItem('refreshed', true);
+}
+
+// onkeyup event
+userInput.onkeyup = () => {
+    let userTask = userInput.value; // get user input
+    if (userTask.trim() != 0) { // check if the user input doesn't contain only spaces.
+        addTask.classList.add("active"); // activate the add button
+    } else {
+        addTask.classList.remove("active"); // deactivate the add button
+    }
 }
 
 showTasks(); // call the showTask function
@@ -27,7 +38,7 @@ addTask.onclick = () => {
     // check for duplicate tasks
     if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
         // alert the user to add different task
-        alert(`"${userTask.trim()}" already exists. Please add a different task.`);
+        alert(`"${userTask}" already exists. Please add a different task.`);
     } else if (editing) {
         arrayList[editingIndex] = userTask; // update the task at the editing index in the array
         editing = false; // set editing to false
@@ -39,6 +50,7 @@ addTask.onclick = () => {
     addTask.classList.remove("active"); // deactivate the add button once the task is added
 }
 
+// press enter to add todo function
 userInput.addEventListener("keyup", (event) => {
     let userTask = userInput.value; // get user input
     if (event.key === "Enter" && (userInput.value.length == 0 || userTask.trim() >= 0)) {
@@ -54,7 +66,7 @@ userInput.addEventListener("keyup", (event) => {
         // check for duplicate tasks
         if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
             // alert the user to add different task
-            alert(`"${userTask.trim()}" already exists. Please add a different task.`);
+            alert(`"${userTask}" already exists. Please add a different task.`);
         } else if (editing) {
             arrayList[editingIndex] = userTask; // update the task at the editing index in the array
             editing = false;
@@ -67,11 +79,7 @@ userInput.addEventListener("keyup", (event) => {
     }
 });
 
-window.onload = function () {
-    isPageRefreshed = sessionStorage.getItem('refreshed') === 'true';
-    sessionStorage.setItem('refreshed', true);
-}
-
+// show tasks function
 function showTasks() {
     let localStorageData = localStorage.getItem("New Todo"); // get local storage of browser
     if (localStorageData == null) { // if local storage has no data
@@ -90,9 +98,9 @@ function showTasks() {
     arrayList.forEach((element, index) => {
         newLiTag += `<li>${element}<span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
     });
-
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
+    // taskList.scrollTop = taskList.scrollHeight; // scroll to the bottom of the list as new tasks are added
 
     if (!sessionStorage.getItem("refreshed")) {
         taskList.scrollTop = currentScrollPos;
