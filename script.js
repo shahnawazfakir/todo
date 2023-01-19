@@ -38,7 +38,7 @@ addTask.onclick = () => {
     // check for duplicate tasks
     if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
         // alert the user to add different task
-        alert(`"${userTask}" already exists. Please add a different task.`);
+        alert(`"${userTask.trim()}" already exists. Please add a different task.`);
     } else if (editing) {
         arrayList[editingIndex] = userTask; // update the task at the editing index in the array
         editing = false; // set editing to false
@@ -66,7 +66,7 @@ userInput.addEventListener("keyup", (event) => {
         // check for duplicate tasks
         if (arrayList.map(x => x.toLowerCase().trim()).includes(userTask.toLowerCase().trim())) {
             // alert the user to add different task
-            alert(`"${userTask}" already exists. Please add a different task.`);
+            alert(`"${userTask.trim()}" already exists. Please add a different task.`);
         } else if (editing) {
             arrayList[editingIndex] = userTask; // update the task at the editing index in the array
             editing = false;
