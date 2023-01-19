@@ -4,15 +4,11 @@ const addTask = document.querySelector(".inputBox button");
 const taskList = document.querySelector(".taskList");
 const clearAllTasks = document.querySelector(".footer button");
 let isPageRefreshed;
+let currentScrollPos;
 
-// onkeyup event
-userInput.onkeyup = () => {
-    let userTask = userInput.value; // get user input
-    if (userTask.trim() != 0) { // check if the user input doesn't contain only spaces.
-        addTask.classList.add("active"); // activate the add button
-    } else {
-        addTask.classList.remove("active"); // deactivate the add button
-    }
+// save current scroll position before adding task
+addTask.onclick = () => {
+    currentScrollPos = taskList.scrollTop;
 }
 
 showTasks(); // call the showTask function
@@ -98,10 +94,15 @@ function showTasks() {
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
 
+    if (!sessionStorage.getItem("refreshed")) {
+        taskList.scrollTop = currentScrollPos;
+    }
+    sessionStorage.setItem("refreshed", true);
+
     if (isPageRefreshed) {
         taskList.scrollTop = taskList.scrollHeight;
     } else {
-        scrollToTop();
+        scrollToTop()
     }
 }
 
