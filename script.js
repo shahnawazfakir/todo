@@ -9,12 +9,25 @@ let newTask;
 
 // function to sort the tasks by drag and drop functionality
 function sortable() {
-    Sortable.create(taskList, {
-        animation: 150,
-        handle: ".draggable",
-        easing: "cubic-bezier(0.215, 0.610, 0.355, 1.000)",
-        ghostClass: "ghost",
-    });
+    if (!("ontouchstart" in window)) {
+        Sortable.create(taskList, {
+            animation: 150,
+            handle: ".draggable",
+            easing: "cubic-bezier(0.215, 0.610, 0.355, 1.000)",
+            ghostClass: "ghost",
+            touchAction: "auto", // added touchAction option
+            onEnd: function (evt) {
+                // get the item that was dragged
+                const item = arrayList.splice(evt.oldIndex, 1)[0];
+                // insert the item at its new position
+                arrayList.splice(evt.newIndex, 0, item);
+                // update localStorage with the new todo list
+                localStorage.setItem("New Todo", JSON.stringify(arrayList));
+                // call the showTask function
+                showTasks(); 
+            }
+        });
+    }
 }
 
 // on load function
@@ -115,7 +128,7 @@ function showTasks() {
 
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
-
+    
     // call the sortable function to add drag and drop features
     sortable();
 
@@ -143,7 +156,6 @@ function editTask(index) {
     let task = arrayList[index]; // get the task from the array
     userInput.value = task; // set the task in the input field
 }
-
 
 // deletes all tasks function
 clearAllTasks.onclick = () => {
