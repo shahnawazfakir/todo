@@ -228,3 +228,11 @@ body {
     transform: scaleX(1);
     transform-origin: bottom left;
 }
+
+/* drag and drop task animation */
+.ghost {
+    opacity: 0.6;
+    position: absolute;
+    z-index: 10000;
+    pointer-events: none;
+}

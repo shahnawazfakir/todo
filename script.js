@@ -5,6 +5,7 @@ const taskList = document.querySelector(".taskList");
 const clearAllTasks = document.querySelector(".footer button");
 let isPageRefreshed;
 let currentScrollPos;
+let newTask;
 
 // on load function
 window.onload = function () {
@@ -44,6 +45,7 @@ addTask.onclick = () => {
         editing = false; // set editing to false
     } else {
         arrayList.push(userTask); // push or add a new value in array
+        newTask = true
     }
     localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
     showTasks(); // call showTask function
@@ -72,6 +74,7 @@ userInput.addEventListener("keyup", (event) => {
             editing = false;
         } else {
             arrayList.push(userTask); // push or add a new value in array
+            newTask = true
         }
         localStorage.setItem("New Todo", JSON.stringify(arrayList)); // transform js object into a json string
         showTasks(); // call showTask function
@@ -92,25 +95,70 @@ function showTasks() {
     if (arrayList.length > 0) { // if array length is greater than 0
         clearAllTasks.classList.add("active"); // activate the delete button
     } else {
-        clearAllTasks.classList.remove("active"); //deactivate the delete button
+        clearAllTasks.classList.remove("active"); // deactivate the delete button
     }
-    let newLiTag = "";
+
+    let newLiTag = ""
     arrayList.forEach((element, index) => {
-        newLiTag += `<li>${element}<span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
+        newLiTag += `<li class="draggable">${element}<span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
     });
+
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
-    // taskList.scrollTop = taskList.scrollHeight; // scroll to the bottom of the list as new tasks are added
 
-    if (!sessionStorage.getItem("refreshed")) {
-        taskList.scrollTop = currentScrollPos;
-    }
-    sessionStorage.setItem("refreshed", true);
+    // sort the tasks by drag and drop functionality
+    Sortable.create(taskList, {
+        animation: 150,
+        handle: ".draggable",
+        easing: "cubic-bezier(0.215, 0.610, 0.355, 1.000)",
+        ghostClass: "ghost",
+        onEnd: function (evt) {
+            // get the item that was dragged
+            const item = arrayList.splice(evt.oldIndex, 1)[0];
+            // insert the item at its new position
+            arrayList.splice(evt.newIndex, 0, item);
+            // update localStorage with the new todo list
+            localStorage.setItem("New Todo", JSON.stringify(arrayList));
+            // get the current scroll position and list item height
+            let currentScrollPos = taskList.scrollTop;
+            let liHeight = taskList.childNodes[0].offsetHeight;
+            // initialize variables for the index of the top visible task and the top visible task itself
+            let topTaskIndex = 0;
+            let topTask = taskList.firstChild;
+            // find the index of the top visible task
+            while (topTask && topTask.offsetTop + topTask.offsetHeight <= currentScrollPos) {
+                topTaskIndex++;
+                topTask = topTask.nextSibling;
+            }
 
-    if (isPageRefreshed) {
+            // calculate the index of the bottom visible task
+            let bottomElementIndex = Math.ceil((currentScrollPos + taskList.offsetHeight) / liHeight);
+            // initialize variable for the new scroll position
+            let newScrollPos;
+
+            // check if the task was dropped in its original position
+            if (evt.oldIndex === evt.newIndex) {
+                // no need to scroll if the task wasn't moved
+                newScrollPos = currentScrollPos;
+            } else if (evt.newIndex < topTaskIndex) {
+                // scroll up to show the dropped task if it was moved above the top visible task
+                newScrollPos = evt.newIndex * liHeight;
+            } else if (evt.newIndex > bottomElementIndex) {
+                // scroll down to show the dropped task if it was moved below the bottom visible task
+                newScrollPos = (evt.newIndex + 1) * liHeight - taskList.offsetHeight;
+            } else {
+                // no need to scroll if the dropped task is already visible
+                newScrollPos = currentScrollPos;
+            }
+            showTasks(); // call the showTask function
+            taskList.scrollTop = newScrollPos;  // set the new scroll position
+        },
+    });
+
+    // check if a new task was added and scroll to the bottom of the list
+    if (newTask == true) {
         taskList.scrollTop = taskList.scrollHeight;
-    } else {
-        scrollToTop()
+        newTask = false;
     }
 }
 
@@ -143,6 +191,7 @@ function editTask(index) {
     let task = arrayList[index]; // get the task from the array
     userInput.value = task; // set the task in the input field
 }
+
 
 // deletes all tasks function
 clearAllTasks.onclick = () => {
