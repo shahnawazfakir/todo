@@ -231,7 +231,7 @@ body {
 
 /* drag and drop task animation */
 .ghost {
-    opacity: 0.6;
+    opacity: 0.5;
     position: absolute;
     z-index: 10000;
     pointer-events: none;
