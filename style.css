@@ -149,7 +149,7 @@ body {
     text-align: center;
     color: #fff;
     padding: 10px 15px;
-    border-radius: 3px 0px 0px 3px;
+    border-radius: 0px 0px 0px 0px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -157,6 +157,28 @@ body {
 /* hover icon animation */
 .taskList li:hover .icon.edit {
     right: 45px;
+}
+
+/* edit icon design */
+.taskList li .move {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #30d158;
+    width: 45px;
+    text-align: center;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 3px 0px 0px 3px;
+    ;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* hover icon animation */
+.taskList li:hover .move {
+    right: 90px;
 }
 
 /* footer design */
@@ -170,7 +192,7 @@ body {
 
 /* clear all button design */
 .footer button {
-    padding: 6px 10px;
+    padding: 5px 10px;
     border-radius: 3px;
     border: none;
     outline: none;
@@ -178,6 +200,7 @@ body {
     font-weight: 400;
     font-size: 16px;
     margin-left: 5px;
+    margin-bottom: 2px;
     background: #0CAFFF;
     cursor: pointer;
     user-select: none;
@@ -194,7 +217,7 @@ body {
 
 /* empty line */
 .line {
-    line-height: 3;
+    line-height: 2.5;
 }
 
 /* empty line */

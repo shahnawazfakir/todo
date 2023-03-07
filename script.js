@@ -9,13 +9,13 @@ let newTask;
 
 // function to sort the tasks by drag and drop functionality
 function sortable() {
+    // check if device has a touchscreen
     if (!("ontouchstart" in window)) {
-        Sortable.create(taskList, {
-            animation: 150,
-            handle: ".draggable",
+        sortable = new Sortable(taskList, {
+            animation: 250,
+            handle: ".drag",
             easing: "cubic-bezier(0.215, 0.610, 0.355, 1.000)",
             ghostClass: "ghost",
-            touchAction: "auto", // added touchAction option
             onEnd: function (evt) {
                 // get the item that was dragged
                 const item = arrayList.splice(evt.oldIndex, 1)[0];
@@ -24,7 +24,27 @@ function sortable() {
                 // update localStorage with the new todo list
                 localStorage.setItem("New Todo", JSON.stringify(arrayList));
                 // call the showTask function
-                showTasks(); 
+                showTasks();
+            }
+        });
+    }
+    // device does not have a touch screen
+    else {
+        sortable = new Sortable(taskList, {
+            animation: 250,
+            handle: ".move",
+            easing: "cubic-bezier(0.215, 0.610, 0.355, 1.000)",
+            ghostClass: "ghost",
+            touchAction: "auto",
+            onEnd: function (evt) {
+                // get the item that was dragged
+                const item = arrayList.splice(evt.oldIndex, 1)[0];
+                // insert the item at its new position
+                arrayList.splice(evt.newIndex, 0, item);
+                // update localStorage with the new todo list
+                localStorage.setItem("New Todo", JSON.stringify(arrayList));
+                // call the showTask function
+                showTasks();
             }
         });
     }
@@ -34,6 +54,9 @@ function sortable() {
 window.onload = function () {
     isPageRefreshed = sessionStorage.getItem('refreshed') === 'true';
     sessionStorage.setItem('refreshed', true);
+    // call the sortable function to add drag and drop features
+    sortable();
+    displayDateTime();
 }
 
 // onkeyup event
@@ -122,15 +145,23 @@ function showTasks() {
     }
 
     let newLiTag = ""
-    arrayList.forEach((element, index) => {
-        newLiTag += `<li class="draggable">${element}<span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
-    });
+    // check if device has a touch screen
+    if (!("ontouchstart" in window)) {
+        // display icons
+        arrayList.forEach((element, index) => {
+            newLiTag += `<li class="drag">${element}<span class="icon edit" onclick="editTask(${index})"><i class="fa-solid fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fa-solid fa-trash"></i></span></li>`;
+        });
+    }
+    // device does not have a touch screen
+    else {
+        // display icons
+        arrayList.forEach((element, index) => {
+            newLiTag += `<li><span class="move"><i class="fas fa-arrows-alt"></i></span> <span>${element}</span> <span class="icon edit" onclick="editTask(${index})"><i class="fas fa-edit"></i></span> <span class="icon delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></span></li>`;
+        });
+    }
 
     taskList.innerHTML = newLiTag; // add new li tag inside ul tag
     userInput.value = ""; // once task added leave the user input box blank
-    
-    // call the sortable function to add drag and drop features
-    sortable();
 
     // check if a new task was added and scroll to the bottom of the list
     if (newTask == true) {
@@ -150,7 +181,6 @@ function deleteTask(index) {
 
 // edit task function
 function editTask(index) {
-    showTasks();
     editing = true; // set editing to true
     editingIndex = index; // set the index of the task that is being edited
     let task = arrayList[index]; // get the task from the array
@@ -171,4 +201,5 @@ function displayDateTime() {
     var dateTimeString = currentDateTime.toLocaleString('en-US', options);
     dateTimeString = dateTimeString.replace(/,/g, "");
     document.getElementById("currentDateTime").innerHTML = dateTimeString;
+    setTimeout(displayDateTime, 1000);
 }
