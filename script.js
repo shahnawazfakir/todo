@@ -275,6 +275,7 @@ function completeTask(index) {
 clearAllTasks.onclick = () => {
     tasksList = []; // empty the array
     localStorage.setItem("Tasks", JSON.stringify(tasksList)); // set the item in local storage
+    localStorage.setItem("Complete Tasks", JSON.stringify(tasksList)); // set the item in local storage
     showTasks(); // call the showTasks function
 }
 
