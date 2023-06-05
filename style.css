@@ -31,17 +31,29 @@ body {
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* title */
-.boxSpace header {
-    font-size: 30px;
-    font-weight: 600;
+/* date and time styles */
+#date {
+    position: relative;
+    width: 100%;
+    padding: 11px 0 5px 0;
 }
 
-/* title icon color */
-.iconcolor {
+#day,
+#month,
+#time {
+    text-align: center;
+    font-size: 22px;
+    color: black;
+}
+
+#month,
+#time {
+    font-size: 18px;
+}
+
+#today {
     color: #0CAFFF;
-    font-size: 40px;
-    margin-left: 3px;
+    font-weight: bold;
 }
 
 /* input box title */
@@ -138,6 +150,32 @@ body {
     right: 0px;
 }
 
+/* complete icon design */
+.taskList li .icon.complete {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #30d158;
+    width: 45px;
+    text-align: center;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 3px 0px 0px 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.taskList li:hover .icon.complete {
+    right: 90px;
+}
+
+.taskList li.completed {
+    text-decoration: line-through;
+    color: #696969;
+    transition: text-decoration 0.3s ease;
+}
+
 /* edit icon design */
 .taskList li .icon.edit {
     position: absolute;
@@ -165,20 +203,19 @@ body {
     right: -45px;
     top: 50%;
     transform: translateY(-50%);
-    background: #30d158;
+    background: black;
     width: 45px;
     text-align: center;
     color: #fff;
     padding: 10px 15px;
     border-radius: 3px 0px 0px 3px;
-    ;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 /* hover icon animation */
 .taskList li:hover .move {
-    right: 90px;
+    right: 135px;
 }
 
 /* footer design */
@@ -217,11 +254,6 @@ body {
 
 /* empty line */
 .line {
-    line-height: 2.5;
-}
-
-/* empty line */
-.line2 {
     line-height: 0.5;
 }
 
