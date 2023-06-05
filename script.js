@@ -173,8 +173,6 @@ function showTasks() {
     } else {
         completedTasksList = JSON.parse(CompletedTasks); // transform json string into a js object
     }
-    // update the pending tasks count
-    updatePendingTasksCount()
 
     if (tasksList.length > 0) { // if array length is greater than 0
         clearAllTasks.classList.add("active"); // activate the delete button
@@ -210,7 +208,10 @@ function showTasks() {
         taskList.scrollTop = taskList.scrollHeight;
         newTask = false;
     }
+    // remove tasks that are not in both lists
     removeCompletedTasksNotInTaskList()
+    // update the pending tasks count
+    updatePendingTasksCount()
 }
 
 function deleteTask(index) {
