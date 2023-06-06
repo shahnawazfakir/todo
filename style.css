@@ -7,10 +7,17 @@
     font-family: 'Poppins', sans-serif;
 }
 
+/* html,
+body {
+    overflow-x: hidden;
+} */
+
 body {
     background-size: cover;
     background-image: url('images/bg.jpeg');
     background-position: top center;
+    padding:0; 
+    margin:0; 
 }
 
 /* background wallpaper wrap */
@@ -25,7 +32,7 @@ body {
     background: #fff;
     max-width: 600px;
     width: 100%;
-    margin: 150px auto;
+    margin: auto;
     padding: 25px;
     border-radius: 5px;
     box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
