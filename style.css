@@ -8,9 +8,11 @@
 }
 
 body {
+    position: relative;
     background-size: cover;
     background-image: url('images/bg.jpeg');
-    background-position: top center;
+    justify-content: center;
+    align-items: center;
 }
 
 /* background wallpaper wrap */
