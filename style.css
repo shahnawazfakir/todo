@@ -10,8 +10,8 @@
 body {
     background-image: url('images/bg.jpeg');
     background-size: cover;
-    /* background-position: top center;
-    background-color: black; */
+    background-position: top center;
+    background-color: black;
     position: relative;
     justify-content: center;
     align-items: center;
